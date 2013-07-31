@@ -3,10 +3,17 @@ JTBD: put the posts on the left and the leaderboard on the right
 Dependencies: none?
 */
 
+body {
+  margin: 0;
+}
+
 .posts {
-  /* styles to make it appear on the left ... */
+  margin-right: 30%;
 }
 
 .leaderboard {
-  /* styles to make it appear on the right ... */
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 30%;
 }
