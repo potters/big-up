@@ -23,10 +23,10 @@ router.define('/:name.css', function(req, res) {
   var name = this.params.name
     , next = this.cbs.length ? this.next : notFound
 
-  css(name, function(exists, readStream) {
+  css(name, function(exists, cssReadStream) {
     if (!exists) { next(req, res) ; return }
     res.writeHead(200, {'Content-Type': 'text/css'})
-    readStream.pipe(res)
+    cssReadStream.pipe(res)
   })
 })
 

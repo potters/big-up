@@ -22,12 +22,14 @@ function streamForName(name, cb) {
 }
 
 if (!module.parent) {
+
   // Run with: node css.js base
 
   var name = process.argv[2]
 
-  streamForName(name, function(exists, str) {
+  streamForName(name, function(exists, readStream) {
     if (!exists) throw new Error(name + " 'aint no css known about 'ere")
-    str.pipe(process.stdout)
+    readStream.pipe(process.stdout)
   })
+
 }
