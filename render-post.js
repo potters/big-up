@@ -29,7 +29,9 @@ function renderPost(view){
 }
 
 function shortenName(fullName){
-  // comment "Myles B."
+  var names = fullName.split(' ')
+  lastInitial = names.pop()[0]
+  return names.join(' ') + ' ' + lastInitial + '.'
 }
 
 function renderPostMessage(messageTokens){
@@ -49,7 +51,9 @@ if (!module.parent) {
 
   renderPost(view).pipe(process.stdout)
 
-  // var assert = require('assert')
+  var assert = require('assert')
+
+  assert(shortenName('Jason Benn') === 'Jason B.')
 
   // // Tests
   // var actual = renderPostMessage([
