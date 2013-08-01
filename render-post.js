@@ -9,10 +9,23 @@
   see:  post.html
 */
 
+var ms = require('hogan.js')
+  , resumer = require('resumer')
+  , fs = require('fs')
+  , templateSrc = fs.readFileSync('./post.html.mustache','utf8')
+  , template = ms.compile(templateSrc)
+
 module.exports = renderPost
 
-function renderPost(postAttributes){
+function renderPost(view){
 
+  // dasherizeKeys() ?
+  view['author-avatar-url'] = view.authorAvatarURL
+  view['author-name']       = view.authorName
+
+  var renderedHTML = template.render(view)
+
+  return resumer().queue(renderedHTML).end()
 }
 
 function shortenName(fullName){
@@ -25,17 +38,28 @@ function renderPostMessage(messageTokens){
 
 if (!module.parent) {
 
-  var assert = require('assert')
+  // Integration test - check that the html renders
 
-  // Tests
-  var actual = renderPostMessage([
-    ["t" , "shoutout to "],
-    ["r", "Myles Byrne"],
-    ["t", "for talking about data structures"]
-  ])
-  var expected = 'Shoutout to <span class="recipient">Myles B.</span> for talking about data structures!'
+  var view = {
+    message: 'Shoutout to <span class="recipient">Myles B.</span> for talking about data structures!',
+    timestamp: 1234567890,
+    authorAvatarURL: "http://gravatar...",
+    authorName: "Robert B."
+  }
 
-  assert.strictEqual(expected, actual)
+  renderPost(view).pipe(process.stdout)
+
+  // var assert = require('assert')
+
+  // // Tests
+  // var actual = renderPostMessage([
+  //   ["t" , "shoutout to "],
+  //   ["r", "Myles Byrne"],
+  //   ["t", "for talking about data structures"]
+  // ])
+  // var expected = 'Shoutout to <span class="recipient">Myles B.</span> for talking about data structures!'
+
+  // assert.strictEqual(expected, actual)
 
 }
 
