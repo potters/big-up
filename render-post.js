@@ -29,11 +29,20 @@ function renderPost(view){
 }
 
 function shortenName(fullName){
-  // comment "Myles B."
+  var names = fullName.split(' ')
+  lastInitial = names.pop()[0]
+  return names.join(' ') + ' ' + lastInitial + '.'
 }
 
 function renderPostMessage(messageTokens){
-
+  recipients = messageTokens.map(function(token) {
+    if (token[0] === 'r') {
+      return '<span class="recipient">' + shortenName(token[1]) + '</span>'
+    } else {
+      return token[1]
+    }
+  })
+  return recipients.join(' ')
 }
 
 if (!module.parent) {
@@ -49,17 +58,20 @@ if (!module.parent) {
 
   renderPost(view).pipe(process.stdout)
 
-  // var assert = require('assert')
+  var assert = require('assert')
 
   // // Tests
-  // var actual = renderPostMessage([
-  //   ["t" , "shoutout to "],
-  //   ["r", "Myles Byrne"],
-  //   ["t", "for talking about data structures"]
-  // ])
-  // var expected = 'Shoutout to <span class="recipient">Myles B.</span> for talking about data structures!'
 
-  // assert.strictEqual(expected, actual)
+  assert(shortenName('Jason Benn') === 'Jason B.')
+
+  var actual = renderPostMessage([
+    ["t" , "Shoutout to"],
+    ["r", "Myles Byrne"],
+    ["t", "for talking about data structures!"]
+  ])
+  var expected = 'Shoutout to <span class="recipient">Myles B.</span> for talking about data structures!'
+
+  assert.strictEqual(expected, actual)
 
 }
 
