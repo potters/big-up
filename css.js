@@ -16,12 +16,14 @@ module.exports = streamForName
 function streamForName(name, cb) {
   var path = './'+name+'.css'
   fs.exists(path, function(exists){
-    if (!exists) { cb(exists); return }
-    cb(exists, fs.createReadStream(path))
+    if (!exists) { cb(false); return }
+    cb(true, fs.createReadStream(path))
   })
 }
 
-if (!module.parent) {
+var runTests = !module.parent && process.argv[2]
+
+if (runTests) {
 
   // Run with: node css.js base
 
