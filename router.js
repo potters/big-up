@@ -17,13 +17,13 @@ router.rootHandler = function(req, res) {
   require('fs').createReadStream('README.md','utf8').pipe(res)
 }
 
-var css = require('./css')
+var styles = require('./css')
 
 router.define('/:name.css', function(req, res) {
   var name = this.params.name
     , next = this.cbs.length ? this.next : notFound
 
-  css(name, function(exists, cssReadStream) {
+  styles(name, function(exists, cssReadStream) {
     if (!exists) { next(req, res) ; return }
     res.writeHead(200, {'Content-Type': 'text/css'})
     cssReadStream.pipe(res)
