@@ -12,10 +12,10 @@ See also:
 */
 
 var ms = require('hogan.js')
-  , resumer = require('resumer')
   , fs = require('fs')
   , templateSrc = fs.readFileSync('./tv-screen.html.mustache','utf8')
   , template = ms.compile(templateSrc)
+  , sts = require('./string-to-stream')
 
 module.exports = renderTVScreen
 
@@ -25,5 +25,5 @@ function renderTVScreen(view) {
 
   var renderedHTML = template.render(view)
 
-  return resumer().queue(renderedHTML).end()
+  return sts(renderedHTML)
 }
