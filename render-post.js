@@ -10,7 +10,7 @@
 */
 
 var ms = require('hogan.js')
-  , resumer = require('resumer')
+  , sts = require('./string-to-stream.js')
   , fs = require('fs')
   , templateSrc = fs.readFileSync('./post.html.mustache','utf8')
   , template = ms.compile(templateSrc)
@@ -25,7 +25,7 @@ function renderPost(view){
 
   var renderedHTML = template.render(view)
 
-  return resumer().queue(renderedHTML).end()
+  return sts(renderedHTML)
 }
 
 function shortenName(fullName){
